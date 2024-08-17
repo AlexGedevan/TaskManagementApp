@@ -5,17 +5,20 @@ import HeaderLogo from "../UI/HeaderLogo";
 import SidebarHeader from "../UI/SidebarHeader";
 import { useBoards } from "../contexts/BoardsContext";
 function Header() {
-  const { isOpenSidebar } = useBoards();
+  const { isOpenSidebar, setAddingNewTask } = useBoards();
   return (
     <StyledHeader>
       <HeaderLeftSide>
         <HeaderLogo />
-        {!isOpenSidebar && <SidebarHeader />}
+        <SidebarHeader />
         <p>Platform Launch</p>
         <img src={arrowDown} alt="Arrow down" />
       </HeaderLeftSide>
       <HeaderRightSide>
-        <AddNewTask isOpenSidebar={isOpenSidebar}>
+        <AddNewTask
+          isOpenSidebar={isOpenSidebar}
+          onClick={() => setAddingNewTask(true)}
+        >
           <img src={plusSign} />
           <p>+ Add New Task</p>
         </AddNewTask>
@@ -48,8 +51,7 @@ const AddNewTask = styled.div`
   /* width: 4.8rem;
   height: 3.2rem; */
   border-radius: 5000px;
-  background-color: ${(props) =>
-    props.isOpenSidebar ? "rgb(98, 95, 199, 0.3)" : "rgb(98, 95, 199)"};
+  background-color: rgb(98, 95, 199);
   & > p {
     display: none;
   }

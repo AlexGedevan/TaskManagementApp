@@ -3,7 +3,6 @@ import iconBoard from "../../public/assets/icon-board.svg";
 import { useBoards } from "../contexts/BoardsContext";
 function BoardItem({ board }) {
   const { selectedBoard, setSelectedBoard } = useBoards();
-  console.log(selectedBoard);
   return (
     <StyledBoardItem
       boardname={board.name}

@@ -3,30 +3,51 @@ import Header from "../components/Header";
 import MainContent from "../components/MainContent";
 import Sidebar from "../components/Sidebar";
 import { useBoards } from "../contexts/BoardsContext";
-import { useEffect, useRef } from "react";
 
 function LandingPage() {
   const { isOpenSidebar } = useBoards();
   return (
-    <StyledLandingPage>
-      {isOpenSidebar && <Sidebar />}
-      <HeaderAndMain>
+    <>
+      <StyledLandingPageMobile>
+        {isOpenSidebar && <Sidebar />}
+        <HeaderAndMain>
+          <Header />
+          <MainContent />
+        </HeaderAndMain>
+      </StyledLandingPageMobile>
+      <StyledLandingPageTablet>
         <Header />
-        <MainContent />
-      </HeaderAndMain>
-    </StyledLandingPage>
+        <div>
+          {isOpenSidebar && <Sidebar />}
+          <MainContent />
+        </div>
+      </StyledLandingPageTablet>
+    </>
   );
 }
 
 export default LandingPage;
 
-const StyledLandingPage = styled.div`
+const StyledLandingPageMobile = styled.div`
   display: flex;
   align-items: start;
+  @media screen and (min-width: 760px) {
+    display: none;
+  }
 `;
 
 const HeaderAndMain = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+`;
+
+const StyledLandingPageTablet = styled.div`
+  display: none;
+  @media screen and (min-width: 760px) {
+    display: block;
+    & > div {
+      display: flex;
+    }
+  }
 `;

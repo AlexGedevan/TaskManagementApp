@@ -15,7 +15,7 @@ const StyledSidebarHeader = styled.div`
   display: none;
   align-items: center;
   gap: 1.5rem;
-  margin-left: 2.6rem;
+  margin-left: 0.8rem;
 
   @media screen and (min-width: 760px) {
     display: flex;

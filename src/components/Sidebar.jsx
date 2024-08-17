@@ -8,7 +8,7 @@ import SidebarHeader from "../UI/SidebarHeader";
 function Sidebar() {
   return (
     <StyledSidebar>
-      <SidebarHeader />
+      {/* <SidebarHeader /> */}
       <Boards />
     </StyledSidebar>
   );

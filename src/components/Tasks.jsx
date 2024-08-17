@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useBoards } from "../contexts/BoardsContext";
 import TasksColumnItem from "./TasksColumnItem";
+import { useState } from "react";
 
 function Tasks() {
   const { boards, selectedBoard } = useBoards();
@@ -20,7 +21,6 @@ function Tasks() {
 export default Tasks;
 
 const StyledTasks = styled.div`
-  /* width: 400px; */
   padding: 2.3rem 2.4rem 2.1rem 2.4rem;
   display: flex;
   gap: 2.4rem;

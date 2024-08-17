@@ -2,7 +2,6 @@ import styled from "styled-components";
 import ColumnTaskItem from "./ColumnTaskItem";
 
 function TasksColumnItem({ column }) {
-  console.log(column);
   return (
     <StyledTasksColumnItem>
       <ColumnHeader>
@@ -13,7 +12,11 @@ function TasksColumnItem({ column }) {
       </ColumnHeader>
       <ColumnTasks>
         {column.tasks.map((task) => (
-          <ColumnTaskItem task={task} key={task.title} />
+          <ColumnTaskItem
+            task={task}
+            key={task.title}
+            columnName={column.name}
+          />
         ))}
       </ColumnTasks>
     </StyledTasksColumnItem>
@@ -46,6 +49,7 @@ const ColumnHeader = styled.div`
     line-height: 1.512rem;
     letter-spacing: 2.4000000953674316px;
     color: #828fa3;
+    width: 28rem;
   }
   margin-bottom: 2.4rem;
 `;

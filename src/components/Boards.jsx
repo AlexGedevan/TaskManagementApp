@@ -30,7 +30,7 @@ const StyledBoards = styled.div`
     line-height: 1.512rem;
     letter-spacing: 2.4000000953674316px;
     color: #828fa3;
-    margin-top: 5.5rem;
+    /* margin-top: 5.5rem; */
     margin-left: 2.4rem;
     margin-bottom: 1.9rem;
   }

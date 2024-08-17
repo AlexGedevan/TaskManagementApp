@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import { useBoards } from "../contexts/BoardsContext";
 import Tasks from "./Tasks";
+import AddNewTask from "./AddNewTask";
 
 function MainContent() {
-  const { boards } = useBoards();
+  const { boards, addingNewTask } = useBoards();
 
   return (
     <StyledMainContent>
@@ -15,6 +16,7 @@ function MainContent() {
       ) : (
         <Tasks />
       )}
+      {addingNewTask && <AddNewTask />}
     </StyledMainContent>
   );
 }
@@ -22,6 +24,7 @@ function MainContent() {
 export default MainContent;
 
 const StyledMainContent = styled.div`
+  width: 100%;
   padding: 0 1.6rem;
   overflow-x: scroll;
   min-height: 100vh;

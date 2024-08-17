@@ -5,9 +5,11 @@ const BoardsContext = createContext();
 
 function BoardsContextProvider({ children }) {
   const [boards, setBoards] = useState(data.boards);
-
+  const [render, setRender] = useState(false);
   const [isOpenSidebar, setIsOpenSidebar] = useState(true);
   const [selectedBoard, setSelectedBoard] = useState("Platform Launch");
+  const [addingNewTask, setAddingNewTask] = useState(false);
+
   return (
     <BoardsContext.Provider
       value={{
@@ -17,6 +19,10 @@ function BoardsContextProvider({ children }) {
         setIsOpenSidebar,
         selectedBoard,
         setSelectedBoard,
+        render,
+        setRender,
+        addingNewTask,
+        setAddingNewTask,
       }}
     >
       {children}
