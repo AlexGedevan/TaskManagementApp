@@ -43,6 +43,7 @@ const StyledHeader = styled.div`
 `;
 
 const AddNewTask = styled.div`
+  cursor: pointer;
   padding: 1.5rem 2.5rem 1.4rem 2.4rem;
   margin-left: 7.6rem;
   display: flex;

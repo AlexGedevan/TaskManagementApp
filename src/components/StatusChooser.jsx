@@ -1,17 +1,24 @@
 import styled from "styled-components";
+import { useBoards } from "../contexts/BoardsContext";
 
-function StatusChooser() {
+function StatusChooser({ setChosenStatus, setIsOpenStatus }) {
+  function handleChooseStatus(column) {
+    setChosenStatus(column.name);
+    setIsOpenStatus(false);
+  }
+  const { selectedBoard, boards } = useBoards();
+  const columns = boards
+    .filter((board) => board.name === selectedBoard)
+    .at(0).columns;
+  console.log(columns);
+
   return (
     <StyledStatusChooser>
-      <Status>
-        <p>Todo</p>
-      </Status>
-      <Status>
-        <p>Doing</p>
-      </Status>
-      <Status>
-        <p>Done</p>
-      </Status>
+      {columns.map((column) => (
+        <Status key={column.name} onClick={() => handleChooseStatus(column)}>
+          <p>{column.name}</p>
+        </Status>
+      ))}
     </StyledStatusChooser>
   );
 }

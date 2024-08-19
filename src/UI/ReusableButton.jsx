@@ -1,10 +1,16 @@
 import styled from "styled-components";
 
-function ReusableButton({ children, backgroundColor, textColor }) {
+function ReusableButton({
+  children,
+  backgroundColor,
+  textColor,
+  onClickFunction,
+}) {
   return (
     <StyledReusableButton
       backgroundColor={backgroundColor}
       textColor={textColor}
+      onClick={onClickFunction}
     >
       {children}
     </StyledReusableButton>

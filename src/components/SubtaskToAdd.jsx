@@ -1,10 +1,46 @@
 import styled from "styled-components";
 import cross from "../../public/assets/icon-cross.svg";
-function SubtaskToAdd({ placeholder }) {
+import { useState } from "react";
+function SubtaskToAdd({
+  placeholder,
+  setNumberOfSubtasks,
+  numberOfSubtasks,
+  setSubtasks,
+  index,
+}) {
+  function handleChange(e) {
+    setSubtask((state) => {
+      return { ...state, title: e.target.value };
+    });
+  }
+  function handleBlur() {
+    setSubtasks((state) => {
+      const updatedList = state;
+      updatedList[index] = subtask;
+      return updatedList;
+    });
+  }
+
+  function handleRemoveSubtask() {
+    setNumberOfSubtasks((state) => {
+      const arr = [...state.slice(0, -1)];
+      return arr;
+    });
+    setSubtasks((state) => {
+      return [...state.slice(0, -1)];
+    });
+  }
+  const [subtask, setSubtask] = useState({ isCompleted: false, title: "" });
   return (
-    <StyledSubtaskToAdd>
-      <input type="text" placeholder={`e.g. ${placeholder}`} />
-      <img src={cross} />
+    <StyledSubtaskToAdd index={index} numberOfSubtasks={numberOfSubtasks}>
+      <input
+        type="text"
+        value={subtask.title}
+        placeholder={`e.g. ${placeholder}`}
+        onChange={handleChange}
+        onBlur={handleBlur}
+      />
+      <img src={cross} onClick={handleRemoveSubtask} />
     </StyledSubtaskToAdd>
   );
 }
@@ -24,5 +60,10 @@ const StyledSubtaskToAdd = styled.div`
     font-weight: 500;
     line-height: 2.3rem;
     opacity: 0.5;
+  }
+  & > img {
+    cursor: pointer;
+    display: ${(props) =>
+      props.index === props.numberOfSubtasks.length - 1 ? "block" : "none"};
   }
 `;

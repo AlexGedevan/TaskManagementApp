@@ -32,7 +32,7 @@ function OpenedTask({
     return () => {
       document.removeEventListener("mousedown", handleClick);
     };
-  }, []);
+  }, [setIsOpen]);
   return (
     <Overlay>
       <StyledOpenedTask ref={divRef}>
@@ -64,6 +64,7 @@ function OpenedTask({
 export default OpenedTask;
 
 const StyledOpenedTask = styled.div`
+  min-width: 30rem;
   padding: 2.4rem 2.4rem 3.2rem 2.4rem;
   background-color: white;
   border-radius: 10px;
@@ -97,6 +98,7 @@ const StyledOpenedTask = styled.div`
 const Flex = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 1.6rem;
 `;
 

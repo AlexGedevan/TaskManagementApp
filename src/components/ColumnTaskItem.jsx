@@ -2,8 +2,10 @@ import styled from "styled-components";
 import { useBoards } from "../contexts/BoardsContext";
 import { useEffect, useState } from "react";
 import OpenedTask from "./OpenedTask";
+import TasksColumnItem from "./TasksColumnItem";
 
 function ColumnTaskItem({ task, columnName }) {
+  // console.log(task);
   const { boards, setBoards, selectedBoard, setRender, render } = useBoards();
   const [isOpen, setIsOpen] = useState("");
   const subTasksNumber = task.subtasks.length;
@@ -23,19 +25,28 @@ function ColumnTaskItem({ task, columnName }) {
       const activeColumn = activeBoard.columns
         .filter((column) => column.name === columnName)
         .at(0);
-      console.log(activeColumn);
-      if (completedSubtasks === 0) {
+      // console.log(activeColumn);
+      if (completedSubtasks === 0 && task.status !== "Todo") {
         activeColumn.tasks = activeColumn.tasks.filter(
           (activeTask) => activeTask !== task
         );
         activeBoard.columns[0].tasks.push(task);
         task.status = "Todo";
-      } else if (completedSubtasks > 0 && completedSubtasks < subTasksNumber) {
+      } else if (
+        completedSubtasks > 0 &&
+        completedSubtasks < subTasksNumber &&
+        task.status !== "Doing"
+      ) {
         activeColumn.tasks = activeColumn.tasks.filter(
           (activeTask) => activeTask !== task
         );
         activeBoard.columns[1].tasks.push(task);
-      } else if (completedSubtasks === subTasksNumber) {
+        task.status = "Doing";
+      } else if (
+        completedSubtasks === subTasksNumber &&
+        task.status !== "Done"
+      ) {
+        task.status = "Done";
         activeColumn.tasks = activeColumn.tasks.filter(
           (activeTask) => activeTask !== task
         );

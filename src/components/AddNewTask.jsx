@@ -1,43 +1,115 @@
 import styled from "styled-components";
 import SubtaskToAdd from "./SubtaskToAdd";
 import arrowDown from "../../public/assets/icon-chevron-down.svg";
+import arrowUp from "../../public/assets/icon-chevron-up.svg";
 import ReusableButton from "../UI/ReusableButton";
 import StatusChooser from "./StatusChooser";
 import { useState } from "react";
+import { useBoards } from "../contexts/BoardsContext";
 function AddNewTask() {
+  const { selectedBoard, boards, setBoards, setRender, setAddingNewTask } =
+    useBoards();
   const [isOpenStatus, setIsOpenStatus] = useState(false);
+  const [chosenStatus, setChosenStatus] = useState("Todo");
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [subtasks, setSubtasks] = useState([]);
+  const [numberOfSubtasks, setNumberOfSubtasks] = useState([1]);
+  console.log(
+    boards
+      .filter((board) => board.name === selectedBoard)
+      .at(0)
+      .columns.filter((column) => column.name === chosenStatus)
+      .at(0).tasks
+  );
+
+  function handleAddTask() {
+    const newTask = {
+      title,
+      description,
+      status: chosenStatus,
+      subtasks: subtasks,
+    };
+
+    const whereToAddTask = boards
+      .filter((board) => board.name === selectedBoard)
+      .at(0)
+      .columns.filter((column) => column.name === chosenStatus)
+      .at(0).tasks;
+    whereToAddTask.push(newTask);
+    setBoards(boards);
+    setRender((state) => !state);
+    setAddingNewTask(false);
+    console.log(whereToAddTask);
+  }
+
+  function handleAddSubtask() {
+    setNumberOfSubtasks((state) => {
+      return [...state, 1];
+    });
+  }
   return (
     <Overlay>
       <StyledAddNewTask>
         <h1>Add New Task</h1>
         <Title>
           <p>Title</p>
-          <input type="text" placeholder="e.g. Take coffee break" />
+          <input
+            type="text"
+            placeholder="e.g. Take coffee break"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
         </Title>
         <Description>
           <p>Description</p>
           <textarea
             type="text"
             placeholder="e.g. It’s always good to take a break to recharge the batteries (total BS)"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
           />
         </Description>
         <Subtasks>
           <p>Subtasks</p>
-          <SubtaskToAdd placeholder="make a coffee" />
-          <SubtaskToAdd placeholder="Buy a ticket to a football match" />
-          <ReusableButton backgroundColor="#635fc71a" textColor="#635fc7">
-            + Add New Subtask
-          </ReusableButton>
+          {numberOfSubtasks.map((item, index) => (
+            <SubtaskToAdd
+              placeholder=""
+              key={index}
+              index={index}
+              setNumberOfSubtasks={setNumberOfSubtasks}
+              numberOfSubtasks={numberOfSubtasks}
+              setSubtasks={setSubtasks}
+            />
+          ))}
+          {/* <SubtaskToAdd placeholder="make a coffee" />
+          <SubtaskToAdd placeholder="Buy a ticket to a football match" /> */}
         </Subtasks>
+        <ReusableButton
+          backgroundColor="#635fc71a"
+          textColor="#635fc7"
+          onClickFunction={handleAddSubtask}
+        >
+          + Add New Subtask
+        </ReusableButton>
         <Status>
           <p>Status</p>
-          <ChosenStatus onClick={() => setIsOpenStatus(!isOpenStatus)}>
-            <p>Todo</p>
-            <img src={arrowDown} />
-          </ChosenStatus>
-          {isOpenStatus && <StatusChooser />}
+          <ChosenStatusDiv onClick={() => setIsOpenStatus(!isOpenStatus)}>
+            <p>{chosenStatus}</p>
+            {isOpenStatus ? <img src={arrowUp} /> : <img src={arrowDown} />}
+          </ChosenStatusDiv>
+          {isOpenStatus && (
+            <StatusChooser
+              setChosenStatus={setChosenStatus}
+              setIsOpenStatus={setIsOpenStatus}
+            />
+          )}
         </Status>
-        <ReusableButton backgroundColor="#635FC7" textColor={"white"}>
+        <ReusableButton
+          backgroundColor="#635FC7"
+          textColor={"white"}
+          onClickFunction={handleAddTask}
+        >
           Create Task
         </ReusableButton>
       </StyledAddNewTask>
@@ -75,6 +147,7 @@ const Title = styled.div`
     font-weight: 700;
     line-height: 1.512rem;
     color: #828fa3;
+    margin-bottom: 0.8rem;
   }
   & > input {
     padding: 0.9rem 1.5rem 0.9rem 1.6rem;
@@ -101,6 +174,11 @@ const Subtasks = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
+  margin-bottom: 1.2rem;
+  pointer-events: none;
+  div:last-child {
+    pointer-events: all;
+  }
   & > button {
     background-color: #635fc71a;
     width: 29.5rem;
@@ -134,7 +212,7 @@ const Status = styled.div`
   margin-bottom: 2.4rem;
 `;
 
-const ChosenStatus = styled.div`
+const ChosenStatusDiv = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
