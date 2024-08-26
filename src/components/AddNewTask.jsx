@@ -52,27 +52,27 @@ function AddNewTask() {
     });
   }
 
-  useEffect(() => {
-    const handleClick = (event) => {
-      if (divRef.current && divRef.current.contains(event.target)) {
-        console.log("Div was clicked!");
-        // Add your custom logic here
-      } else {
-        setAddingNewTask(false);
-      }
-    };
+  // useEffect(() => {
+  //   const handleClick = (event) => {
+  //     if (divRef.current && divRef.current.contains(event.target)) {
+  //       console.log("Div was clicked!");
+  //       // Add your custom logic here
+  //     } else {
+  //       setAddingNewTask(false);
+  //     }
+  //   };
 
-    // Attach event listener
-    document.addEventListener("mousedown", handleClick);
+  // Attach event listener
+  // document.addEventListener("mousedown", handleClick);
 
-    // Cleanup the event listener when the component unmounts
-    return () => {
-      document.removeEventListener("mousedown", handleClick);
-    };
-  }, [setAddingNewTask]);
+  // Cleanup the event listener when the component unmounts
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClick);
+  //   };
+  // }, [setAddingNewTask]);
   return (
     <Overlay>
-      <StyledAddNewTask ref={divRef}>
+      <StyledAddNewTask>
         <h1>Add New Task</h1>
         <Title>
           <p>Title</p>

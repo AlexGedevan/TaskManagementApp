@@ -12,7 +12,11 @@ function TasksColumnItem({ column }) {
       </ColumnHeader>
       <ColumnTasks>
         {column.tasks.map((task, index) => (
-          <ColumnTaskItem task={task} key={index} columnName={column.name} />
+          <ColumnTaskItem
+            task={task}
+            key={task.title}
+            columnName={column.name}
+          />
         ))}
       </ColumnTasks>
     </StyledTasksColumnItem>

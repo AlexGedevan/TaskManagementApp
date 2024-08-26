@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import checkIcon from "../../public/assets/icon-check.svg";
 import { useEffect, useState } from "react";
+import { useBoards } from "../contexts/BoardsContext";
 function SubtaskItem({
   subtask,
   task,
@@ -8,8 +9,10 @@ function SubtaskItem({
   completedSubtasks,
   setCompletedSubtasks,
 }) {
+  const { boards, setBoards, setRender } = useBoards();
   function handleSubtask() {
     subtask.isCompleted = !subtask.isCompleted;
+    setBoards(boards);
     setCompletedSubtasks(
       task.subtasks.filter((subtask) => subtask.isCompleted).length
     );
