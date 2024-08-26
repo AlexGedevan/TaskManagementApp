@@ -4,7 +4,7 @@ import arrowDown from "../../public/assets/icon-chevron-down.svg";
 import arrowUp from "../../public/assets/icon-chevron-up.svg";
 import ReusableButton from "../UI/ReusableButton";
 import StatusChooser from "./StatusChooser";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useBoards } from "../contexts/BoardsContext";
 function AddNewTask() {
   const { selectedBoard, boards, setBoards, setRender, setAddingNewTask } =
@@ -15,6 +15,9 @@ function AddNewTask() {
   const [description, setDescription] = useState("");
   const [subtasks, setSubtasks] = useState([]);
   const [numberOfSubtasks, setNumberOfSubtasks] = useState([1]);
+
+  const divRef = useRef(null);
+
   console.log(
     boards
       .filter((board) => board.name === selectedBoard)
@@ -48,9 +51,28 @@ function AddNewTask() {
       return [...state, 1];
     });
   }
+
+  useEffect(() => {
+    const handleClick = (event) => {
+      if (divRef.current && divRef.current.contains(event.target)) {
+        console.log("Div was clicked!");
+        // Add your custom logic here
+      } else {
+        setAddingNewTask(false);
+      }
+    };
+
+    // Attach event listener
+    document.addEventListener("mousedown", handleClick);
+
+    // Cleanup the event listener when the component unmounts
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+    };
+  }, [setAddingNewTask]);
   return (
     <Overlay>
-      <StyledAddNewTask>
+      <StyledAddNewTask ref={divRef}>
         <h1>Add New Task</h1>
         <Title>
           <p>Title</p>

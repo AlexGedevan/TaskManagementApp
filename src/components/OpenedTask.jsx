@@ -3,6 +3,7 @@ import SubtaskItem from "./SubtaskItem";
 import Status from "./Status";
 import Elipsis from "../../public/assets/icon-vertical-ellipsis.svg";
 import { useEffect, useRef, useState } from "react";
+import { useBoards } from "../contexts/BoardsContext";
 function OpenedTask({
   task,
   subTasksNumber,
@@ -11,16 +12,43 @@ function OpenedTask({
   columnName,
   setIsOpen,
 }) {
+  const { boards, setBoards, selectedBoard } = useBoards();
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const divRef = useRef(null);
+  const deleteRef = useRef(null);
+
+  function handleDeleteTask() {
+    const updatedBoards = boards.map((board) => {
+      if (board.name === selectedBoard) {
+        return {
+          ...board,
+          columns: board.columns.map((column) => {
+            if (column.name === task.status) {
+              return {
+                ...column,
+                tasks: column.tasks.filter((item) => item !== task),
+              };
+            }
+            return column;
+          }),
+        };
+      }
+      return board;
+    });
+    setIsOpen(false);
+    setBoards(updatedBoards);
+  }
 
   useEffect(() => {
     const handleClick = (event) => {
       if (divRef.current && divRef.current.contains(event.target)) {
         console.log("Div was clicked!");
+        if (deleteRef.current && deleteRef.current.contains(event.target)) {
+          handleDeleteTask();
+          setIsOpen(false);
+        }
         // Add your custom logic here
       } else {
-        console.log("Clicked outside of the div.");
-
         setIsOpen(false);
       }
     };
@@ -38,7 +66,14 @@ function OpenedTask({
       <StyledOpenedTask ref={divRef}>
         <Flex>
           <h1>{task.title}</h1>
-          <img src={Elipsis} />
+          <img src={Elipsis} onClick={() => setSettingsOpen(!settingsOpen)} />
+          {settingsOpen && (
+            <TaskSettings>
+              <p onClick={() => setSettingsOpen(false)}>Close</p>
+              <p>Edit</p>
+              <p ref={deleteRef}>Delete</p>
+            </TaskSettings>
+          )}
         </Flex>
         <p>{task.description}</p>
         <h2>
@@ -96,14 +131,19 @@ const StyledOpenedTask = styled.div`
 `;
 
 const Flex = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1.6rem;
+
+  & > img:hover {
+    height: 25px;
+  }
 `;
 
 const Overlay = styled.div`
-  padding: 1rem;
+  padding: 10rem;
   position: fixed;
   top: 0;
   left: 0;
@@ -114,4 +154,21 @@ const Overlay = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+
+const TaskSettings = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  position: absolute;
+  background-color: white;
+  padding: 2rem;
+  right: -120px;
+  border-radius: 10px;
+  top: 0px;
+  font-size: 1.4rem;
+
+  & > p:hover {
+    border-bottom: 1px solid black;
+  }
 `;

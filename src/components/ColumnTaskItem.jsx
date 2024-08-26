@@ -7,7 +7,7 @@ import TasksColumnItem from "./TasksColumnItem";
 function ColumnTaskItem({ task, columnName }) {
   // console.log(task);
   const { boards, setBoards, selectedBoard, setRender, render } = useBoards();
-  const [isOpen, setIsOpen] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
   const subTasksNumber = task.subtasks.length;
   const [completedSubtasks, setCompletedSubtasks] = useState(
     task.subtasks.filter((subtask) => subtask.isCompleted).length
