@@ -12,10 +12,22 @@ function OpenedTask({
   columnName,
   setIsOpen,
 }) {
-  const { boards, setBoards, selectedBoard } = useBoards();
+  const {
+    boards,
+    setBoards,
+    selectedBoard,
+    editingTask,
+    setEditingTask,
+    setSelectedTask,
+  } = useBoards();
   const [settingsOpen, setSettingsOpen] = useState(false);
+
   const divRef = useRef(null);
   const deleteRef = useRef(null);
+
+  function handleEditTask() {
+    setEditingTask(true);
+  }
 
   function handleDeleteTask() {
     const updatedBoards = boards.map((board) => {
@@ -38,6 +50,10 @@ function OpenedTask({
     setIsOpen(false);
     setBoards(updatedBoards);
   }
+
+  useEffect(function () {
+    setSelectedTask(task);
+  }, []);
 
   useEffect(() => {
     const handleClick = (event) => {
@@ -70,7 +86,7 @@ function OpenedTask({
           {settingsOpen && (
             <TaskSettings>
               <p onClick={() => setSettingsOpen(false)}>Close</p>
-              <p>Edit</p>
+              <p onClick={handleEditTask}>Edit</p>
               <p ref={deleteRef}>Delete</p>
             </TaskSettings>
           )}

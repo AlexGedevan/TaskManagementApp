@@ -2,9 +2,10 @@ import styled from "styled-components";
 import { useBoards } from "../contexts/BoardsContext";
 import Tasks from "./Tasks";
 import AddNewTask from "./AddNewTask";
+import EditTask from "./EditTask";
 
 function MainContent() {
-  const { boards, addingNewTask } = useBoards();
+  const { boards, addingNewTask, editingTask } = useBoards();
 
   return (
     <StyledMainContent>
@@ -17,6 +18,7 @@ function MainContent() {
         <Tasks />
       )}
       {addingNewTask && <AddNewTask />}
+      {editingTask && <EditTask />}
     </StyledMainContent>
   );
 }

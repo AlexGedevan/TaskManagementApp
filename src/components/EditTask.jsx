@@ -6,19 +6,28 @@ import ReusableButton from "../UI/ReusableButton";
 import StatusChooser from "./StatusChooser";
 import { useEffect, useRef, useState } from "react";
 import { useBoards } from "../contexts/BoardsContext";
-function AddNewTask() {
-  const { selectedBoard, boards, setBoards, setRender, setAddingNewTask } =
-    useBoards();
+function EditTask() {
+  const {
+    selectedBoard,
+    boards,
+    setBoards,
+    setRender,
+    setEditingTask,
+    selectedTask,
+    setSelectedTask,
+  } = useBoards();
   const [isOpenStatus, setIsOpenStatus] = useState(false);
   const [chosenStatus, setChosenStatus] = useState("Todo");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [subtasks, setSubtasks] = useState([]);
-  const [numberOfSubtasks, setNumberOfSubtasks] = useState([1]);
+  const [numberOfSubtasks, setNumberOfSubtasks] = useState(
+    Array(selectedTask.subtasks.length).fill(1)
+  );
 
   const divRef = useRef(null);
 
-  function handleAddTask() {
+  function handleEditTask() {
     if (!title || !description || subtasks.length === 0) {
       return alert("Missing mandatory fields");
     }
@@ -28,17 +37,49 @@ function AddNewTask() {
       status: chosenStatus,
       subtasks: subtasks,
     };
-
-    const whereToAddTask = boards
+    const taskToUpdate = boards
       .filter((board) => board.name === selectedBoard)
       .at(0)
       .columns.filter((column) => column.name === chosenStatus)
-      .at(0).tasks;
-    whereToAddTask.push(newTask);
+      .at(0)
+      .tasks.findIndex(
+        (task) =>
+          task.title === selectedTask.title &&
+          task.description === selectedTask.description
+      );
+
+    boards
+      .filter((board) => board.name === selectedBoard)
+      .at(0)
+      .columns.filter((column) => column.name === chosenStatus)
+      .at(0).tasks[taskToUpdate] = newTask;
+
     setBoards(boards);
+    setEditingTask(false);
     setRender((state) => !state);
-    setAddingNewTask(false);
   }
+
+  //   function handleAddTask() {
+  //     if (!title || !description || subtasks.length === 0) {
+  //       return alert("Missing mandatory fields");
+  //     }
+  //     const newTask = {
+  //       title,
+  //       description,
+  //       status: chosenStatus,
+  //       subtasks: subtasks,
+  //     };
+
+  //   const whereToAddTask = boards
+  //     .filter((board) => board.name === selectedBoard)
+  //     .at(0)
+  //     .columns.filter((column) => column.name === chosenStatus)
+  //     .at(0).tasks;
+  // whereToAddTask.push(newTask);
+  // setBoards(boards);
+  // setRender((state) => !state);
+  // setEditingTask(false);
+  //   }
 
   function handleAddSubtask() {
     setNumberOfSubtasks((state) => {
@@ -55,7 +96,7 @@ function AddNewTask() {
         console.log("Div was clicked!");
       } else {
         console.log("Clicked outside the div");
-        // setAddingNewTask(false); // Assuming this is where you want to close the task creation
+        // setEditingTask(false); // Assuming this is where you want to close the task creation
       }
     };
 
@@ -66,17 +107,18 @@ function AddNewTask() {
     return () => {
       document.removeEventListener("mousedown", handleClick);
     };
-  }, [setAddingNewTask]);
+  }, [setEditingTask]);
   return (
     <Overlay>
-      <StyledAddNewTask ref={divRef}>
-        <h1>Add New Task</h1>
+      <StyledEditTask ref={divRef}>
+        <h1>Edit Task</h1>
         <Title>
           <p>Title</p>
           <input
             type="text"
             placeholder="e.g. Take coffee break"
             value={title}
+            placeholder={selectedTask.title}
             onChange={(e) => setTitle(e.target.value)}
           />
         </Title>
@@ -86,6 +128,7 @@ function AddNewTask() {
             type="text"
             placeholder="e.g. It’s always good to take a break to recharge the batteries (total BS)"
             value={description}
+            placeholder={selectedTask.description}
             onChange={(e) => setDescription(e.target.value)}
           />
         </Description>
@@ -99,6 +142,7 @@ function AddNewTask() {
               setNumberOfSubtasks={setNumberOfSubtasks}
               numberOfSubtasks={numberOfSubtasks}
               setSubtasks={setSubtasks}
+              selectedTask={selectedTask}
             />
           ))}
           {/* <SubtaskToAdd placeholder="make a coffee" />
@@ -127,19 +171,19 @@ function AddNewTask() {
         <ReusableButton
           backgroundColor="#635FC7"
           textColor={"white"}
-          onClickFunction={handleAddTask}
+          onClickFunction={handleEditTask}
         >
-          Create Task
+          Edit Task
         </ReusableButton>
-      </StyledAddNewTask>
+      </StyledEditTask>
       ;
     </Overlay>
   );
 }
 
-export default AddNewTask;
+export default EditTask;
 
-const StyledAddNewTask = styled.div`
+const StyledEditTask = styled.div`
   padding: 2.4rem;
   border-radius: 10px;
   background-color: white;

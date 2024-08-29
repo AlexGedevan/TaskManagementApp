@@ -7,6 +7,7 @@ function SubtaskToAdd({
   numberOfSubtasks,
   setSubtasks,
   index,
+  selectedTask,
 }) {
   function handleChange(e) {
     setSubtask((state) => {

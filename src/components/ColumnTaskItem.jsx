@@ -12,7 +12,6 @@ function ColumnTaskItem({ task, columnName }) {
   const [completedSubtasks, setCompletedSubtasks] = useState(
     task.subtasks.filter((subtask) => subtask.isCompleted).length
   );
-  console.log(completedSubtasks);
 
   useEffect(
     function () {
