@@ -86,30 +86,22 @@ function EditTask() {
       return [...state, 1];
     });
   }
-  useEffect(() => {
-    const handleClick = (event) => {
-      // Check if the click was inside the div
-      const clickedInside =
-        divRef.current && divRef.current.contains(event.target);
 
-      if (clickedInside) {
-        console.log("Div was clicked!");
-      } else {
-        console.log("Clicked outside the div");
-        // setEditingTask(false); // Assuming this is where you want to close the task creation
-      }
-    };
+  const handleClick = (event) => {
+    // Check if the click was inside the div
+    const clickedInside =
+      divRef.current && divRef.current.contains(event.target);
 
-    // Attach the event listener
-    document.addEventListener("mousedown", handleClick);
+    if (clickedInside) {
+      console.log("Div was clicked!");
+    } else {
+      console.log("Clicked outside the div");
+      setEditingTask(false); // Assuming this is where you want to close the task creation
+    }
+  };
 
-    // Cleanup the event listener when the component unmounts
-    return () => {
-      document.removeEventListener("mousedown", handleClick);
-    };
-  }, [setEditingTask]);
   return (
-    <Overlay>
+    <Overlay onClick={handleClick}>
       <StyledEditTask ref={divRef}>
         <h1>Edit Task</h1>
         <Title>

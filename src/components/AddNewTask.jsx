@@ -45,30 +45,42 @@ function AddNewTask() {
       return [...state, 1];
     });
   }
-  useEffect(() => {
-    const handleClick = (event) => {
-      // Check if the click was inside the div
-      const clickedInside =
-        divRef.current && divRef.current.contains(event.target);
+  const handleClick = (event) => {
+    // Check if the click was inside the div
+    const clickedInside =
+      divRef.current && divRef.current.contains(event.target);
 
-      if (clickedInside) {
-        console.log("Div was clicked!");
-      } else {
-        console.log("Clicked outside the div");
-        // setAddingNewTask(false); // Assuming this is where you want to close the task creation
-      }
-    };
+    if (clickedInside) {
+      console.log("Div was clicked!");
+    } else {
+      console.log("Clicked outside the div");
+      setAddingNewTask(false); // Assuming this is where you want to close the task creation
+    }
+  };
+  // useEffect(() => {
+  //   const handleClick = (event) => {
+  //     // Check if the click was inside the div
+  //     const clickedInside =
+  //       divRef.current && divRef.current.contains(event.target);
 
-    // Attach the event listener
-    document.addEventListener("mousedown", handleClick);
+  //     if (clickedInside) {
+  //       console.log("Div was clicked!");
+  //     } else {
+  //       console.log("Clicked outside the div");
+  //       setAddingNewTask(false); // Assuming this is where you want to close the task creation
+  //     }
+  //   };
 
-    // Cleanup the event listener when the component unmounts
-    return () => {
-      document.removeEventListener("mousedown", handleClick);
-    };
-  }, [setAddingNewTask]);
+  //   // Attach the event listener
+  //   document.addEventListener("mousedown", handleClick);
+
+  //   // Cleanup the event listener when the component unmounts
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClick);
+  //   };
+  // }, [setAddingNewTask]);
   return (
-    <Overlay>
+    <Overlay onClick={handleClick}>
       <StyledAddNewTask ref={divRef}>
         <h1>Add New Task</h1>
         <Title>
