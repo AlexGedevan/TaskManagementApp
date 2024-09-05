@@ -7,20 +7,30 @@ import StatusChooser from "./StatusChooser";
 import { useEffect, useRef, useState } from "react";
 import { useBoards } from "../contexts/BoardsContext";
 function AddNewTask() {
-  const { selectedBoard, boards, setBoards, setRender, setAddingNewTask } =
-    useBoards();
+  const {
+    selectedBoard,
+    boards,
+    setBoards,
+    setRender,
+    setAddingNewTask,
+    subtasks,
+    setSubtasks,
+  } = useBoards();
   const [isOpenStatus, setIsOpenStatus] = useState(false);
-  const [chosenStatus, setChosenStatus] = useState("Todo");
+  const [chosenStatus, setChosenStatus] = useState(
+    boards.filter((board) => board.name === selectedBoard).at(0).columns[0].name
+  );
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [subtasks, setSubtasks] = useState([]);
-  const [numberOfSubtasks, setNumberOfSubtasks] = useState([1]);
 
   const divRef = useRef(null);
 
   function handleAddTask() {
     if (!title || !description || subtasks.length === 0) {
       return alert("Missing mandatory fields");
+    }
+    if (subtasks.find((subtask) => subtask.title === "")) {
+      return alert("cannot create a subtask with no title");
     }
     const newTask = {
       title,
@@ -41,10 +51,12 @@ function AddNewTask() {
   }
 
   function handleAddSubtask() {
-    setNumberOfSubtasks((state) => {
-      return [...state, 1];
+    console.log(subtasks);
+    setSubtasks((state) => {
+      return [...state, { title: "", isCompleted: false }]; // Create a new array with the existing subtasks plus the new subtask
     });
   }
+
   const handleClick = (event) => {
     // Check if the click was inside the div
     const clickedInside =
@@ -54,6 +66,8 @@ function AddNewTask() {
       console.log("Div was clicked!");
     } else {
       console.log("Clicked outside the div");
+      setSubtasks([{ title: "", isCompleted: false }]);
+
       setAddingNewTask(false); // Assuming this is where you want to close the task creation
     }
   };
@@ -103,14 +117,17 @@ function AddNewTask() {
         </Description>
         <Subtasks>
           <p>Subtasks</p>
-          {numberOfSubtasks.map((item, index) => (
+          {subtasks.map((item, index) => (
             <SubtaskToAdd
               placeholder=""
               key={index}
               index={index}
-              setNumberOfSubtasks={setNumberOfSubtasks}
-              numberOfSubtasks={numberOfSubtasks}
+              // setNumberOfSubtasks={setNumberOfSubtasks}
+              // numberOfSubtasks={numberOfSubtasks}
               setSubtasks={setSubtasks}
+              subtasks={subtasks}
+              item={item}
+              setRender={setRender}
             />
           ))}
           {/* <SubtaskToAdd placeholder="make a coffee" />
@@ -206,10 +223,7 @@ const Subtasks = styled.div`
   flex-direction: column;
   gap: 1.2rem;
   margin-bottom: 1.2rem;
-  pointer-events: none;
-  div:last-child {
-    pointer-events: all;
-  }
+
   & > button {
     background-color: #635fc71a;
     width: 29.5rem;

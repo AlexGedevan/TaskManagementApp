@@ -3,35 +3,84 @@ import { useBoards } from "../contexts/BoardsContext";
 import Tasks from "./Tasks";
 import AddNewTask from "./AddNewTask";
 import EditTask from "./EditTask";
+import AddingNewColumn from "./AddingNewColumn";
+import AddingNewBoard from "./AddingNewBoard";
+import DeletingTheBoard from "./DeletingTheBoard";
 
 function MainContent() {
-  const { boards, addingNewTask, editingTask } = useBoards();
+  const {
+    boards,
+    addingNewTask,
+    editingTask,
+    addingNewColumn,
+    setAddingNewColumn,
+    addingNewBoard,
+    deletingTheBoard,
+    setAddingNewBoard,
+  } = useBoards();
 
   return (
     <StyledMainContent>
-      {!boards ? (
+      {boards.length === 0 ? (
         <EmptyBoardMessage>
-          <h1>This board is empty. Create a new column to get started.</h1>
-          <button>+ Add new column</button>
+          <h1>There are no boards. Create a new one to get started</h1>
+          <button onClick={() => setAddingNewBoard(true)}>
+            + Add new Board
+          </button>
         </EmptyBoardMessage>
       ) : (
         <Tasks />
       )}
       {addingNewTask && <AddNewTask />}
       {editingTask && <EditTask />}
+      <NewColumn>
+        <p onClick={() => setAddingNewColumn(true)}>+ New Column</p>
+      </NewColumn>
+      {addingNewColumn && <AddingNewColumn />}
+      {addingNewBoard && <AddingNewBoard />}
+      {deletingTheBoard && <DeletingTheBoard />}
     </StyledMainContent>
   );
 }
 
 export default MainContent;
 
+const NewColumn = styled.div`
+  display: block;
+  @media screen and (min-width: 1140px) {
+    display: flex;
+  }
+  align-items: center;
+  border-radius: 10px;
+  padding: 1rem;
+  justify-content: center;
+  height: 70%;
+  min-width: 28rem;
+  margin-top: 65px;
+  background: linear-gradient(
+    180deg,
+    #e9effa 0%,
+    rgba(233, 239, 250, 0.5) 100%
+  );
+  & > p {
+    font-family: Plus Jakarta Sans;
+    font-size: 2.4rem;
+    font-weight: 700;
+    line-height: 3.024rem;
+    color: #828fa3;
+  }
+`;
+
 const StyledMainContent = styled.div`
   width: 100%;
   padding: 0 1.6rem;
   overflow-x: scroll;
   min-height: 100vh;
-
+  display: flex;
   background-color: #f4f7fd;
+  @media screen and (min-width: 1140px) {
+    padding: 2.4rem;
+  }
 `;
 
 const EmptyBoardMessage = styled.div`

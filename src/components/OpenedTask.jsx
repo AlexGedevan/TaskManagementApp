@@ -18,7 +18,10 @@ function OpenedTask({
     selectedBoard,
     editingTask,
     setEditingTask,
+    selectedTask,
     setSelectedTask,
+    setSubtasks,
+    setRender,
   } = useBoards();
   const [settingsOpen, setSettingsOpen] = useState(false);
 
@@ -26,6 +29,7 @@ function OpenedTask({
   const deleteRef = useRef(null);
 
   function handleEditTask() {
+    setIsOpen(false);
     setEditingTask(true);
   }
 
@@ -51,9 +55,12 @@ function OpenedTask({
     setBoards(updatedBoards);
   }
 
-  useEffect(function () {
-    setSelectedTask(task);
-  }, []);
+  useEffect(() => {
+    setSelectedTask(task); // Set the selectedTask state to the incoming task
+    if (task) {
+      setSubtasks(task.subtasks); // Use the task object directly to set the subtasks
+    }
+  }, [task]); // Add `task` to the dependency array
 
   useEffect(() => {
     const handleClick = (event) => {
@@ -65,6 +72,7 @@ function OpenedTask({
         }
         // Add your custom logic here
       } else {
+        // setSubtasks([{ title: "", isCompleted: false }]);
         setIsOpen(false);
       }
     };

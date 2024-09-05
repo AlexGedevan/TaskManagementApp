@@ -18,7 +18,10 @@ function ColumnTaskItem({ task, columnName }) {
       const activeBoard = boards
         .filter((board) => board.name === selectedBoard)
         .at(0);
-      if (activeBoard.name === "Roadmap") {
+      if (
+        activeBoard.name !== "Platform Launch" &&
+        activeBoard.name !== "Marketing Plan"
+      ) {
         return;
       }
       // console.log(activeBoard);

@@ -7,10 +7,16 @@ function BoardsContextProvider({ children }) {
   const [boards, setBoards] = useState(data.boards);
   const [render, setRender] = useState(false);
   const [isOpenSidebar, setIsOpenSidebar] = useState(true);
-  const [selectedBoard, setSelectedBoard] = useState("Platform Launch");
+  const [selectedBoard, setSelectedBoard] = useState(
+    boards.length > 0 ? boards[0].name : "none"
+  );
   const [addingNewTask, setAddingNewTask] = useState(false);
   const [editingTask, setEditingTask] = useState(false);
   const [selectedTask, setSelectedTask] = useState({});
+  const [subtasks, setSubtasks] = useState([{ title: "", isCompleted: false }]);
+  const [addingNewColumn, setAddingNewColumn] = useState(false);
+  const [addingNewBoard, setAddingNewBoard] = useState(false);
+  const [deletingTheBoard, setDeletingTheBoard] = useState(false);
 
   return (
     <BoardsContext.Provider
@@ -29,6 +35,14 @@ function BoardsContextProvider({ children }) {
         setEditingTask,
         selectedTask,
         setSelectedTask,
+        subtasks,
+        setSubtasks,
+        addingNewColumn,
+        setAddingNewColumn,
+        addingNewBoard,
+        setAddingNewBoard,
+        deletingTheBoard,
+        setDeletingTheBoard,
       }}
     >
       {children}

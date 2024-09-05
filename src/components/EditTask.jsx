@@ -15,15 +15,16 @@ function EditTask() {
     setEditingTask,
     selectedTask,
     setSelectedTask,
+    subtasks,
+    setSubtasks,
   } = useBoards();
   const [isOpenStatus, setIsOpenStatus] = useState(false);
-  const [chosenStatus, setChosenStatus] = useState("Todo");
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [subtasks, setSubtasks] = useState([]);
-  const [numberOfSubtasks, setNumberOfSubtasks] = useState(
-    Array(selectedTask.subtasks.length).fill(1)
-  );
+  const [chosenStatus, setChosenStatus] = useState(selectedTask.status);
+  const [title, setTitle] = useState(selectedTask.title);
+  const [description, setDescription] = useState(selectedTask.description);
+  // console.log(chosenStatus);
+  // const [subtasks, setSubtasks] = useState([]);
+  // console.log(selectedTask);
 
   const divRef = useRef(null);
 
@@ -31,11 +32,14 @@ function EditTask() {
     if (!title || !description || subtasks.length === 0) {
       return alert("Missing mandatory fields");
     }
+    if (subtasks.find((subtask) => subtask.title === "")) {
+      return alert("cannot create a subtask with no title");
+    }
     const newTask = {
       title,
       description,
       status: chosenStatus,
-      subtasks: subtasks,
+      subtasks,
     };
     const taskToUpdate = boards
       .filter((board) => board.name === selectedBoard)
@@ -82,9 +86,10 @@ function EditTask() {
   //   }
 
   function handleAddSubtask() {
-    setNumberOfSubtasks((state) => {
-      return [...state, 1];
+    setSubtasks((state) => {
+      return [...state, { title: "", isCompleted: false }]; // Create a new array with the existing subtasks plus the new subtask
     });
+    // setRender((state) => !state);
   }
 
   const handleClick = (event) => {
@@ -97,8 +102,19 @@ function EditTask() {
     } else {
       console.log("Clicked outside the div");
       setEditingTask(false); // Assuming this is where you want to close the task creation
+      setSubtasks([{ title: "", isCompleted: false }]);
     }
   };
+
+  function handleChangeTitle(e) {
+    setTitle(e.target.value);
+    setRender((state) => !state);
+  }
+  function handleChangeDescription(e) {
+    setDescription(e.target.value);
+
+    setRender((state) => !state);
+  }
 
   return (
     <Overlay onClick={handleClick}>
@@ -111,7 +127,7 @@ function EditTask() {
             placeholder="e.g. Take coffee break"
             value={title}
             placeholder={selectedTask.title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={(e) => handleChangeTitle(e)}
           />
         </Title>
         <Description>
@@ -120,19 +136,20 @@ function EditTask() {
             type="text"
             placeholder="e.g. It’s always good to take a break to recharge the batteries (total BS)"
             value={description}
-            placeholder={selectedTask.description}
-            onChange={(e) => setDescription(e.target.value)}
+            onChange={(e) => handleChangeDescription(e)}
           />
         </Description>
         <Subtasks>
           <p>Subtasks</p>
-          {numberOfSubtasks.map((item, index) => (
+          {subtasks.map((item, index) => (
             <SubtaskToAdd
-              placeholder=""
+              // placeholder=""
               key={index}
               index={index}
-              setNumberOfSubtasks={setNumberOfSubtasks}
-              numberOfSubtasks={numberOfSubtasks}
+              item={item}
+              // setNumberOfSubtasks={setNumberOfSubtasks}
+              // numberOfSubtasks={numberOfSubtasks}
+              subtasks={subtasks}
               setSubtasks={setSubtasks}
               selectedTask={selectedTask}
             />
@@ -230,10 +247,7 @@ const Subtasks = styled.div`
   flex-direction: column;
   gap: 1.2rem;
   margin-bottom: 1.2rem;
-  pointer-events: none;
-  div:last-child {
-    pointer-events: all;
-  }
+
   & > button {
     background-color: #635fc71a;
     width: 29.5rem;

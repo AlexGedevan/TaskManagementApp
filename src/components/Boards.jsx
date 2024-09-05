@@ -4,9 +4,8 @@ import BoardItem from "./BoardItem";
 import iconBoard from "../../public/assets/icon-board.svg";
 
 function Boards({ isOpen }) {
-  const { boards } = useBoards();
+  const { boards, setAddingNewBoard } = useBoards();
 
-  console.log(boards);
   return (
     <StyledBoards>
       <p>ALL BOARDS (3)</p>
@@ -15,7 +14,7 @@ function Boards({ isOpen }) {
       ))}
       <CreateNewBoard>
         <img src={iconBoard} />
-        <p>+ Create New Board</p>
+        <p onClick={() => setAddingNewBoard(true)}>+ Create New Board</p>
       </CreateNewBoard>
     </StyledBoards>
   );

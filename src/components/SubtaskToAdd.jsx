@@ -2,44 +2,46 @@ import styled from "styled-components";
 import cross from "../../public/assets/icon-cross.svg";
 import { useState } from "react";
 function SubtaskToAdd({
-  placeholder,
-  setNumberOfSubtasks,
-  numberOfSubtasks,
+  // placeholder,
+  // setNumberOfSubtasks,
+  // numberOfSubtasks,
+  subtasks,
   setSubtasks,
   index,
   selectedTask,
+  setRender,
+  item,
 }) {
   function handleChange(e) {
-    setSubtask((state) => {
-      return { ...state, title: e.target.value };
-    });
+    const newSubtasks = subtasks.map((subtask, i) =>
+      i === index ? { ...subtask, title: e.target.value } : subtask
+    );
+    setSubtasks(newSubtasks);
   }
-  function handleBlur() {
+  // function handleBlur() {
+  //   setSubtasks((state) => {
+  //     const updatedList = state;
+  //     updatedList[index] = subtask;
+  //     return updatedList;
+  //   });
+  // }
+  function handleRemoveSubtask() {
     setSubtasks((state) => {
-      const updatedList = state;
-      updatedList[index] = subtask;
-      return updatedList;
+      const updatedSubtasks = [...state]; // Create a copy of the current state
+      updatedSubtasks.splice(index, 1); // Remove the item at the specified index
+      return updatedSubtasks; // Return the updated array
     });
   }
 
-  function handleRemoveSubtask() {
-    setNumberOfSubtasks((state) => {
-      const arr = [...state.slice(0, -1)];
-      return arr;
-    });
-    setSubtasks((state) => {
-      return [...state.slice(0, -1)];
-    });
-  }
-  const [subtask, setSubtask] = useState({ isCompleted: false, title: "" });
+  // const [subtask, setSubtask] = useState({ isCompleted: false, title: "" });
   return (
-    <StyledSubtaskToAdd index={index} numberOfSubtasks={numberOfSubtasks}>
+    <StyledSubtaskToAdd index={index}>
       <input
         type="text"
-        value={subtask.title}
-        placeholder={`e.g. ${placeholder}`}
+        value={subtasks[index].title}
+        // placeholder={`e.g. ${placeholder}`
         onChange={handleChange}
-        onBlur={handleBlur}
+        // onBlur={handleBlur}
       />
       <img src={cross} onClick={handleRemoveSubtask} />
     </StyledSubtaskToAdd>
@@ -61,10 +63,5 @@ const StyledSubtaskToAdd = styled.div`
     font-weight: 500;
     line-height: 2.3rem;
     opacity: 0.5;
-  }
-  & > img {
-    cursor: pointer;
-    display: ${(props) =>
-      props.index === props.numberOfSubtasks.length - 1 ? "block" : "none"};
   }
 `;
