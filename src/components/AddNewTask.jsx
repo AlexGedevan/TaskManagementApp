@@ -22,6 +22,8 @@ function AddNewTask() {
   );
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const statusNeeded =
+    selectedBoard !== "Platform Launch" && selectedBoard !== "Marketing Plan";
 
   const divRef = useRef(null);
 
@@ -134,25 +136,28 @@ function AddNewTask() {
           <SubtaskToAdd placeholder="Buy a ticket to a football match" /> */}
         </Subtasks>
         <ReusableButton
+          marginBottom={"1.2rem"}
           backgroundColor="#635fc71a"
           textColor="#635fc7"
           onClickFunction={handleAddSubtask}
         >
           + Add New Subtask
         </ReusableButton>
-        <Status>
-          <p>Status</p>
-          <ChosenStatusDiv onClick={() => setIsOpenStatus(!isOpenStatus)}>
-            <p>{chosenStatus}</p>
-            {isOpenStatus ? <img src={arrowUp} /> : <img src={arrowDown} />}
-          </ChosenStatusDiv>
-          {isOpenStatus && (
-            <StatusChooser
-              setChosenStatus={setChosenStatus}
-              setIsOpenStatus={setIsOpenStatus}
-            />
-          )}
-        </Status>
+        {statusNeeded && (
+          <Status>
+            <p>Status</p>
+            <ChosenStatusDiv onClick={() => setIsOpenStatus(!isOpenStatus)}>
+              <p>{chosenStatus}</p>
+              {isOpenStatus ? <img src={arrowUp} /> : <img src={arrowDown} />}
+            </ChosenStatusDiv>
+            {isOpenStatus && (
+              <StatusChooser
+                setChosenStatus={setChosenStatus}
+                setIsOpenStatus={setIsOpenStatus}
+              />
+            )}
+          </Status>
+        )}
         <ReusableButton
           backgroundColor="#635FC7"
           textColor={"white"}
@@ -172,6 +177,8 @@ const StyledAddNewTask = styled.div`
   padding: 2.4rem;
   border-radius: 10px;
   background-color: white;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Overlay = styled.div`

@@ -5,12 +5,14 @@ function ReusableButton({
   backgroundColor,
   textColor,
   onClickFunction,
+  marginBottom = 0,
 }) {
   return (
     <StyledReusableButton
       backgroundColor={backgroundColor}
       textColor={textColor}
       onClick={onClickFunction}
+      marginBottom={marginBottom}
     >
       {children}
     </StyledReusableButton>
@@ -29,4 +31,5 @@ const StyledReusableButton = styled.button`
   font-weight: 700;
   line-height: 2.3rem;
   color: ${(props) => props.textColor};
+  margin-bottom: ${(props) => props.marginBottom};
 `;
