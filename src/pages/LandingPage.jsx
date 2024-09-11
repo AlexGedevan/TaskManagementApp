@@ -5,7 +5,7 @@ import Sidebar from "../components/Sidebar";
 import { useBoards } from "../contexts/BoardsContext";
 
 function LandingPage() {
-  const { isOpenSidebar } = useBoards();
+  const { isOpenSidebar, isDarkMode } = useBoards();
   return (
     <>
       <StyledLandingPageMobile>

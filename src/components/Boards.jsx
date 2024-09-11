@@ -4,7 +4,7 @@ import BoardItem from "./BoardItem";
 import iconBoard from "../../public/assets/icon-board.svg";
 
 function Boards({ isOpen }) {
-  const { boards, setAddingNewBoard } = useBoards();
+  const { boards, setAddingNewBoard, isDarkMode, setIsDarkMode } = useBoards();
 
   return (
     <StyledBoards>
@@ -16,6 +16,9 @@ function Boards({ isOpen }) {
         <img src={iconBoard} />
         <p onClick={() => setAddingNewBoard(true)}>+ Create New Board</p>
       </CreateNewBoard>
+      <p onClick={() => setIsDarkMode((state) => !state)}>
+        {isDarkMode ? "Light ☀" : "Dark 🌑"}
+      </p>
     </StyledBoards>
   );
 }
@@ -23,6 +26,7 @@ function Boards({ isOpen }) {
 export default Boards;
 
 const StyledBoards = styled.div`
+  position: relative;
   & > p {
     font-size: 1.2rem;
     font-weight: 700;
@@ -32,6 +36,11 @@ const StyledBoards = styled.div`
     /* margin-top: 5.5rem; */
     margin-left: 2.4rem;
     margin-bottom: 1.9rem;
+  }
+
+  & > p:last-child {
+    position: absolute;
+    bottom: -400px;
   }
 `;
 

@@ -3,9 +3,12 @@ import HeaderLogo from "./HeaderLogo";
 import { useBoards } from "../contexts/BoardsContext";
 
 function SidebarHeader() {
-  const { isOpenSidebar, setIsOpenSidebar } = useBoards();
+  const { isOpenSidebar, setIsOpenSidebar, isDarkMode } = useBoards();
   return (
-    <StyledSidebarHeader onClick={() => setIsOpenSidebar(!isOpenSidebar)}>
+    <StyledSidebarHeader
+      onClick={() => setIsOpenSidebar(!isOpenSidebar)}
+      isDarkMode={isDarkMode}
+    >
       <HeaderLogo />
       <h1>Kanban</h1>
     </StyledSidebarHeader>
@@ -19,6 +22,9 @@ const StyledSidebarHeader = styled.div`
 
   @media screen and (min-width: 760px) {
     display: flex;
+  }
+  & > h1 {
+    color: ${(props) => props.isDarkMode && "white"};
   }
 `;
 

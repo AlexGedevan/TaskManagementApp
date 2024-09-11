@@ -17,6 +17,7 @@ function Header() {
     boards,
     setRender,
     setIsOpenSidebar,
+    isDarkMode,
   } = useBoards();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const columnsLength =
@@ -32,8 +33,8 @@ function Header() {
     [selectedBoard]
   );
   return (
-    <StyledHeader>
-      <HeaderLeftSide>
+    <StyledHeader isDarkMode={isDarkMode}>
+      <HeaderLeftSide isDarkMode={isDarkMode}>
         <HeaderLogo />
         <SidebarHeader />
         <p>{selectedBoard !== "none" && selectedBoard}</p>
@@ -65,6 +66,7 @@ function Header() {
 export default Header;
 
 const StyledHeader = styled.div`
+  background-color: ${(props) => props.isDarkMode && "#2B2C37"};
   width: 100%;
   display: flex;
   align-items: center;
@@ -122,7 +124,7 @@ const HeaderLeftSide = styled.div`
   align-items: center;
   & > p {
     margin-left: 16px;
-
+    color: ${(props) => props.isDarkMode && "white"};
     font-size: 1.8rem;
     font-weight: 700;
     line-height: 2.268rem;

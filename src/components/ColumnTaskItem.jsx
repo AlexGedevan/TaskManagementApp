@@ -6,7 +6,8 @@ import TasksColumnItem from "./TasksColumnItem";
 
 function ColumnTaskItem({ task, columnName }) {
   // console.log(task);
-  const { boards, setBoards, selectedBoard, setRender, render } = useBoards();
+  const { boards, setBoards, selectedBoard, setRender, render, isDarkMode } =
+    useBoards();
   const [isOpen, setIsOpen] = useState(false);
   const subTasksNumber = task.subtasks.length;
   const [completedSubtasks, setCompletedSubtasks] = useState(
@@ -62,7 +63,10 @@ function ColumnTaskItem({ task, columnName }) {
   );
 
   return (
-    <StyledColumnTaskItem onClick={() => setIsOpen(true)}>
+    <StyledColumnTaskItem
+      onClick={() => setIsOpen(true)}
+      isDarkMode={isDarkMode}
+    >
       <h1>{task.title}</h1>
       <p>
         {completedSubtasks} of {subTasksNumber} substasks
@@ -86,7 +90,8 @@ export default ColumnTaskItem;
 const StyledColumnTaskItem = styled.div`
   cursor: pointer;
   padding: 2.3rem 1.6rem 2.3rem 1.6rem;
-  background-color: white;
+  background-color: ${(props) => (props.isDarkMode ? "#2B2C37" : "white")};
+
   border-radius: 10px;
   width: 28rem;
 
@@ -94,11 +99,13 @@ const StyledColumnTaskItem = styled.div`
     font-size: 1.5rem;
     font-weight: 700;
     line-height: 1.89rem;
+    color: ${(props) => props.isDarkMode && "white"};
   }
 
   & > p {
     font-size: 1.2rem;
     font-weight: 700;
     line-height: 1.512rem;
+    color: ${(props) => props.isDarkMode && "#828FA3"};
   }
 `;

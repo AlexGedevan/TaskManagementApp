@@ -17,10 +17,11 @@ function MainContent() {
     addingNewBoard,
     deletingTheBoard,
     setAddingNewBoard,
+    isDarkMode,
   } = useBoards();
 
   return (
-    <StyledMainContent boards={boards}>
+    <StyledMainContent boards={boards} isDarkMode={isDarkMode}>
       {boards.length === 0 ? (
         <EmptyBoardMessage>
           <h1>There are no boards. Create a new one to get started</h1>
@@ -75,10 +76,11 @@ const NewColumn = styled.div`
 const StyledMainContent = styled.div`
   width: 100%;
   padding: 0 1.6rem;
+
   overflow-x: scroll;
   min-height: 100vh;
   display: ${(props) => (props.boards.length > 0 ? "flex" : "block")};
-  background-color: #f4f7fd;
+  background-color: ${(props) => (props.isDarkMode ? "#20212C" : "#f4f7fd")};
   @media screen and (min-width: 1140px) {
     padding: 2.4rem;
   }
