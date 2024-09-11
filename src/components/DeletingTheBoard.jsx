@@ -12,21 +12,39 @@ function DeletingTheBoard() {
     setSelectedBoard,
   } = useBoards();
 
-  function handleDeleteBoard() {
-    setSelectedBoard((state) => {
-      if (boards.length > 1) {
-        return boards[1].name;
-      } else if (boards.length === 1) {
-        return "none";
-      } else if (boards.length === 0) {
-        return alert("there is no boards to delete");
+  function handleDeleteBoard(boardToDelete) {
+    if (boards.length === 0) {
+      alert("There are no boards to delete.");
+      return;
+    }
+
+    // Filter out the board to be deleted
+    const updatedBoards = boards.filter(
+      (board) => board.name !== boardToDelete
+    );
+
+    // Update the selected board
+    setSelectedBoard((prevSelectedBoard) => {
+      if (updatedBoards.length === 0) {
+        return "none"; // If no boards left, set to "none"
+      }
+
+      // Check if the deleted board is the selected one
+      if (prevSelectedBoard === boardToDelete) {
+        // If deleted board was selected, choose the next available board
+        return updatedBoards[0].name;
+      } else {
+        return prevSelectedBoard; // Keep the selected board unchanged
       }
     });
-    setBoards((boards) => {
-      setDeletingTheBoard(false);
-      return boards.filter((board) => board.name !== selectedBoard);
-    });
+
+    // Update the boards state
+    setBoards(updatedBoards);
+
+    // Reset the delete confirmation state
+    setDeletingTheBoard(false);
   }
+
   return (
     <Overlay>
       <StyledDeletingTheBoard>
@@ -39,7 +57,7 @@ function DeletingTheBoard() {
           <ReusableButton
             backgroundColor={"#EA5555"}
             textColor={"white"}
-            onClickFunction={handleDeleteBoard}
+            onClickFunction={() => handleDeleteBoard(selectedBoard)}
           >
             Delete
           </ReusableButton>

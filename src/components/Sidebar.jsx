@@ -17,12 +17,19 @@ function Sidebar() {
 export default Sidebar;
 
 const StyledSidebar = styled.div`
-  min-width: 260px;
-  padding: 3.2rem 2rem 0 0;
-  display: none;
+  position: absolute;
+  top: 70px;
+  background-color: white;
+  padding: 1rem;
+  display: block;
   height: 100%;
 
   @media screen and (min-width: 760px) {
+    position: static;
     display: block;
+    background-color: none;
+    padding: 3.2rem 2rem 0 0;
+    min-width: 26rem;
+    height: 100%;
   }
 `;

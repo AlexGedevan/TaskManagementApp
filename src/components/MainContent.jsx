@@ -20,7 +20,7 @@ function MainContent() {
   } = useBoards();
 
   return (
-    <StyledMainContent>
+    <StyledMainContent boards={boards}>
       {boards.length === 0 ? (
         <EmptyBoardMessage>
           <h1>There are no boards. Create a new one to get started</h1>
@@ -33,9 +33,11 @@ function MainContent() {
       )}
       {addingNewTask && <AddNewTask />}
       {editingTask && <EditTask />}
-      <NewColumn>
-        <p onClick={() => setAddingNewColumn(true)}>+ New Column</p>
-      </NewColumn>
+      {boards.length > 0 && (
+        <NewColumn>
+          <p onClick={() => setAddingNewColumn(true)}>+ New Column</p>
+        </NewColumn>
+      )}
       {addingNewColumn && <AddingNewColumn />}
       {addingNewBoard && <AddingNewBoard />}
       {deletingTheBoard && <DeletingTheBoard />}
@@ -54,7 +56,6 @@ const NewColumn = styled.div`
   border-radius: 10px;
   padding: 1rem;
   justify-content: center;
-  height: 70%;
   min-width: 28rem;
   margin-top: 65px;
   background: linear-gradient(
@@ -76,7 +77,7 @@ const StyledMainContent = styled.div`
   padding: 0 1.6rem;
   overflow-x: scroll;
   min-height: 100vh;
-  display: flex;
+  display: ${(props) => (props.boards.length > 0 ? "flex" : "block")};
   background-color: #f4f7fd;
   @media screen and (min-width: 1140px) {
     padding: 2.4rem;
@@ -84,7 +85,7 @@ const StyledMainContent = styled.div`
 `;
 
 const EmptyBoardMessage = styled.div`
-  height: 100%;
+  height: 100vh;
   display: flex;
   gap: 2.5rem;
   flex-direction: column;

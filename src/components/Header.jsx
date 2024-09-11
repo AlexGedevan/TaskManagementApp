@@ -16,6 +16,7 @@ function Header() {
     selectedBoard,
     boards,
     setRender,
+    setIsOpenSidebar,
   } = useBoards();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const columnsLength =
@@ -35,7 +36,7 @@ function Header() {
       <HeaderLeftSide>
         <HeaderLogo />
         <SidebarHeader />
-        <p>{selectedBoard}</p>
+        <p>{selectedBoard !== "none" && selectedBoard}</p>
         <img src={arrowDown} alt="Arrow down" />
       </HeaderLeftSide>
       <HeaderRightSide>

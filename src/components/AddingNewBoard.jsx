@@ -43,7 +43,7 @@ function AddingNewBoard() {
     <Overlay onSubmit={handleClick}>
       <StyledAddingNewBoard ref={divRef}>
         <Input>
-          <p>Enter column name : </p>
+          <p>Enter board name : </p>
           <input
             type="text"
             placeholder="Board name..."

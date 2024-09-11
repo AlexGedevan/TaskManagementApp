@@ -6,7 +6,7 @@ const BoardsContext = createContext();
 function BoardsContextProvider({ children }) {
   const [boards, setBoards] = useState(data.boards);
   const [render, setRender] = useState(false);
-  const [isOpenSidebar, setIsOpenSidebar] = useState(true);
+  const [isOpenSidebar, setIsOpenSidebar] = useState(false);
   const [selectedBoard, setSelectedBoard] = useState(
     boards.length > 0 ? boards[0].name : "none"
   );

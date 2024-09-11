@@ -1,8 +1,10 @@
 import styled from "styled-components";
+import { useBoards } from "../contexts/BoardsContext";
 
 function HeaderLogo() {
+  const { setIsOpenSidebar } = useBoards();
   return (
-    <StyledHeaderLogo>
+    <StyledHeaderLogo onClick={() => setIsOpenSidebar((state) => !state)}>
       <div></div>
       <div></div>
       <div></div>
