@@ -17,7 +17,7 @@ function BoardsContextProvider({ children }) {
   const [addingNewColumn, setAddingNewColumn] = useState(false);
   const [addingNewBoard, setAddingNewBoard] = useState(false);
   const [deletingTheBoard, setDeletingTheBoard] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   return (
     <BoardsContext.Provider

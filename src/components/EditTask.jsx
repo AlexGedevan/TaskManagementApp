@@ -17,6 +17,7 @@ function EditTask() {
     setSelectedTask,
     subtasks,
     setSubtasks,
+    isDarkMode,
   } = useBoards();
   const [isOpenStatus, setIsOpenStatus] = useState(false);
   const [chosenStatus, setChosenStatus] = useState(selectedTask.status);
@@ -25,11 +26,11 @@ function EditTask() {
   // console.log(chosenStatus);
   // const [subtasks, setSubtasks] = useState([]);
   // console.log(selectedTask);
-
+  console.log(selectedTask);
   const divRef = useRef(null);
 
   function handleEditTask() {
-    if (!title || !description || subtasks.length === 0) {
+    if (!title || subtasks.length === 0) {
       return alert("Missing mandatory fields");
     }
     if (subtasks.find((subtask) => subtask.title === "")) {
@@ -41,24 +42,44 @@ function EditTask() {
       status: chosenStatus,
       subtasks,
     };
+    console.log(selectedTask);
+
     const taskToUpdate = boards
-      .filter((board) => board.name === selectedBoard)
-      .at(0)
-      .columns.filter((column) => column.name === chosenStatus)
-      .at(0)
+      .find((board) => board.name === selectedBoard)
+      .columns.find((column) => column.name === selectedTask.status)
       .tasks.findIndex(
         (task) =>
           task.title === selectedTask.title &&
           task.description === selectedTask.description
       );
+    console.log(taskToUpdate);
+    // boards
+    //   .find((board) => board.name === selectedBoard)
+    //   .columns.find((column) => column.name === selectedTask.status).tasks[
+    //   taskToUpdate
+    // ] = newTask;
+    if (selectedTask.status !== chosenStatus) {
+      setBoards((state) => {
+        state
+          .find((board) => board.name === selectedBoard)
+          .columns.find((column) => column.name === selectedTask.status)
+          .tasks.splice(taskToUpdate, 1);
 
-    boards
-      .filter((board) => board.name === selectedBoard)
-      .at(0)
-      .columns.filter((column) => column.name === chosenStatus)
-      .at(0).tasks[taskToUpdate] = newTask;
+        state
+          .find((board) => board.name === selectedBoard)
+          .columns.find((column) => column.name === chosenStatus)
+          .tasks.push(newTask);
+        console.log(selectedTask.status);
+        return state;
+      });
+    } else if (selectedTask.status === chosenStatus) {
+      boards
+        .find((board) => board.name === selectedBoard)
+        .columns.find((column) => column.name === selectedTask.status).tasks[
+        taskToUpdate
+      ] = newTask;
+    }
 
-    setBoards(boards);
     setEditingTask(false);
     setRender((state) => !state);
   }
@@ -118,19 +139,18 @@ function EditTask() {
 
   return (
     <Overlay onClick={handleClick}>
-      <StyledEditTask ref={divRef}>
+      <StyledEditTask ref={divRef} isDarkMode={isDarkMode}>
         <h1>Edit Task</h1>
-        <Title>
+        <Title isDarkMode={isDarkMode}>
           <p>Title</p>
           <input
             type="text"
             placeholder="e.g. Take coffee break"
             value={title}
-            placeholder={selectedTask.title}
             onChange={(e) => handleChangeTitle(e)}
           />
         </Title>
-        <Description>
+        <Description isDarkMode={isDarkMode}>
           <p>Description</p>
           <textarea
             type="text"
@@ -166,7 +186,16 @@ function EditTask() {
         </ReusableButton>
         <Status>
           <p>Status</p>
-          <ChosenStatusDiv onClick={() => setIsOpenStatus(!isOpenStatus)}>
+          <ChosenStatusDiv
+            onClick={() => {
+              if (
+                selectedBoard !== "Platform Launch" &&
+                selectedBoard !== "Marketing Plan"
+              ) {
+                setIsOpenStatus((state) => !state);
+              }
+            }}
+          >
             <p>{chosenStatus}</p>
             {isOpenStatus ? <img src={arrowUp} /> : <img src={arrowDown} />}
           </ChosenStatusDiv>
@@ -195,7 +224,8 @@ export default EditTask;
 const StyledEditTask = styled.div`
   padding: 2.4rem;
   border-radius: 10px;
-  background-color: white;
+  background-color: ${(props) => (props.isDarkMode ? "#2B2C37" : "white")};
+  color: ${(props) => props.isDarkMode && "white"};
 `;
 
 const Overlay = styled.div`
@@ -224,6 +254,8 @@ const Title = styled.div`
   & > input {
     padding: 0.9rem 1.5rem 0.9rem 1.6rem;
     width: 26.4rem;
+    background-color: ${(props) => (props.isDarkMode ? "#2B2C37" : "white")};
+    color: ${(props) => props.isDarkMode && "white"};
   }
 `;
 
@@ -239,6 +271,8 @@ const Description = styled.div`
   & > textarea {
     padding: 0.9rem 1.5rem 3.3rem 1.6rem;
     width: 26.4rem;
+    background-color: ${(props) => (props.isDarkMode ? "#2B2C37" : "white")};
+    color: ${(props) => props.isDarkMode && "white"};
   }
 `;
 

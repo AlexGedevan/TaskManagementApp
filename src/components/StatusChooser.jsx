@@ -10,7 +10,7 @@ function StatusChooser({ setChosenStatus, setIsOpenStatus }) {
   const columns = boards
     .filter((board) => board.name === selectedBoard)
     .at(0).columns;
-  console.log(columns);
+  // console.log(columns);
 
   return (
     <StyledStatusChooser>

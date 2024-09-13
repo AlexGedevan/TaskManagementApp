@@ -18,12 +18,13 @@ function MainContent() {
     deletingTheBoard,
     setAddingNewBoard,
     isDarkMode,
+    selectedBoard,
   } = useBoards();
 
   return (
     <StyledMainContent boards={boards} isDarkMode={isDarkMode}>
       {boards.length === 0 ? (
-        <EmptyBoardMessage>
+        <EmptyBoardMessage isDarkMode={isDarkMode}>
           <h1>There are no boards. Create a new one to get started</h1>
           <button onClick={() => setAddingNewBoard(true)}>
             + Add new Board
@@ -34,11 +35,13 @@ function MainContent() {
       )}
       {addingNewTask && <AddNewTask />}
       {editingTask && <EditTask />}
-      {boards.length > 0 && (
-        <NewColumn>
-          <p onClick={() => setAddingNewColumn(true)}>+ New Column</p>
-        </NewColumn>
-      )}
+      {boards.length > 0 &&
+        selectedBoard !== "Platform Launch" &&
+        selectedBoard !== "Marketing Plan" && (
+          <NewColumn>
+            <p onClick={() => setAddingNewColumn(true)}>+ New Column</p>
+          </NewColumn>
+        )}
       {addingNewColumn && <AddingNewColumn />}
       {addingNewBoard && <AddingNewBoard />}
       {deletingTheBoard && <DeletingTheBoard />}
@@ -93,6 +96,7 @@ const EmptyBoardMessage = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  color: ${(props) => props.isDarkMode && "white"};
 
   & > h1 {
     text-align: center;

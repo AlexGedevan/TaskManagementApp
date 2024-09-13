@@ -22,9 +22,9 @@ function OpenedTask({
     setSelectedTask,
     setSubtasks,
     setRender,
+    isDarkMode,
   } = useBoards();
   const [settingsOpen, setSettingsOpen] = useState(false);
-
   const divRef = useRef(null);
   const deleteRef = useRef(null);
 
@@ -32,6 +32,7 @@ function OpenedTask({
     setIsOpen(false);
     setEditingTask(true);
   }
+  console.log(selectedTask);
 
   function handleDeleteTask() {
     const updatedBoards = boards.map((board) => {
@@ -87,12 +88,12 @@ function OpenedTask({
   }, [setIsOpen]);
   return (
     <Overlay>
-      <StyledOpenedTask ref={divRef}>
+      <StyledOpenedTask ref={divRef} isDarkMode={isDarkMode}>
         <Flex>
           <h1>{task.title}</h1>
           <img src={Elipsis} onClick={() => setSettingsOpen(!settingsOpen)} />
           {settingsOpen && (
-            <TaskSettings>
+            <TaskSettings isDarkMode={isDarkMode}>
               <p onClick={() => setSettingsOpen(false)}>Close</p>
               <p onClick={handleEditTask}>Edit</p>
               <p ref={deleteRef}>Delete</p>
@@ -114,7 +115,7 @@ function OpenedTask({
           />
         ))}
         <p>Current Status</p>
-        <Status columnName={columnName} />
+        <Status columnName={selectedTask.status} />
       </StyledOpenedTask>
     </Overlay>
   );
@@ -125,8 +126,9 @@ export default OpenedTask;
 const StyledOpenedTask = styled.div`
   min-width: 30rem;
   padding: 2.4rem 2.4rem 3.2rem 2.4rem;
-  background-color: white;
+  background-color: ${(props) => (props.isDarkMode ? "#2B2C37" : "white")};
   border-radius: 10px;
+  color: ${(props) => props.isDarkMode && "white"};
 
   & > h1 {
     font-size: 1.8rem;
@@ -185,12 +187,17 @@ const TaskSettings = styled.div`
   flex-direction: column;
   gap: 1rem;
   position: absolute;
-  background-color: white;
+  background-color: ${(props) => (props.isDarkMode ? "#2B2C37" : "white")};
   padding: 2rem;
-  right: -120px;
+  right: -20px;
+  top: -150px;
   border-radius: 10px;
-  top: 0px;
   font-size: 1.4rem;
+
+  @media screen and (min-width: 760px) {
+    right: -120px;
+    top: 0px;
+  }
 
   & > p:hover {
     border-bottom: 1px solid black;

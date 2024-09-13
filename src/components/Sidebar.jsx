@@ -23,7 +23,7 @@ const StyledSidebar = styled.div`
   background-color: ${(props) => (props.isDarkMode ? "#2B2C37" : "white")};
   padding: 1rem;
   display: block;
-  height: 100%;
+  height: 95%;
 
   @media screen and (min-width: 760px) {
     position: ${(props) => !props.isDarkMode && "static"};

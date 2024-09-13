@@ -9,7 +9,7 @@ function SubtaskItem({
   completedSubtasks,
   setCompletedSubtasks,
 }) {
-  const { boards, setBoards, setRender } = useBoards();
+  const { boards, setBoards, setRender, isDarkMode } = useBoards();
   function handleSubtask() {
     subtask.isCompleted = !subtask.isCompleted;
     setBoards(boards);
@@ -20,14 +20,14 @@ function SubtaskItem({
 
   // console.log(subtask);
   return (
-    <StyledSubtaskItem>
+    <StyledSubtaskItem isDarkMode={isDarkMode}>
       <Subtask>
         {subtask.isCompleted ? (
           <CheckIconDiv onClick={handleSubtask}>
             <img src={checkIcon} />
           </CheckIconDiv>
         ) : (
-          <NotCheckedSubtask onClick={handleSubtask} />
+          <NotCheckedSubtask onClick={handleSubtask} isDarkMode={isDarkMode} />
         )}
         <p>{subtask.title}</p>
       </Subtask>
@@ -40,7 +40,7 @@ export default SubtaskItem;
 const StyledSubtaskItem = styled.div`
   margin-top: 0.8rem;
   padding: 1.3rem 0.8rem 1.6rem 1.2rem;
-  background-color: #f4f7fd;
+  background-color: ${(props) => (props.isDarkMode ? "#20212C" : "#f4f7fd")};
 `;
 
 const CheckIconDiv = styled.div`
@@ -60,6 +60,6 @@ const Subtask = styled.div`
 const NotCheckedSubtask = styled.div`
   width: 1.6rem;
   height: 1.6rem;
-  background-color: white;
+  background-color: ${(props) => !props.isDarkMode && "white"};
   border: 1px solid gray;
 `;

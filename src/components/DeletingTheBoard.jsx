@@ -10,6 +10,7 @@ function DeletingTheBoard() {
     setDeletingTheBoard,
     setSelectedBoardItem,
     setSelectedBoard,
+    isDarkMode,
   } = useBoards();
 
   function handleDeleteBoard(boardToDelete) {
@@ -47,7 +48,7 @@ function DeletingTheBoard() {
 
   return (
     <Overlay>
-      <StyledDeletingTheBoard>
+      <StyledDeletingTheBoard isDarkMode={isDarkMode}>
         <h1>Delete this board?</h1>
         <p>
           Are you sure you want to delete the ‘{selectedBoard}’ board? This
@@ -79,7 +80,7 @@ export default DeletingTheBoard;
 
 const StyledDeletingTheBoard = styled.div`
   padding: 3.2rem;
-  background-color: white;
+  background-color: ${(props) => (props.isDarkMode ? "#2B2C37" : "white")};
   display: flex;
   flex-direction: column;
   width: 34rem;

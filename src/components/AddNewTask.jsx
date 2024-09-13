@@ -15,6 +15,7 @@ function AddNewTask() {
     setAddingNewTask,
     subtasks,
     setSubtasks,
+    isDarkMode,
   } = useBoards();
   const [isOpenStatus, setIsOpenStatus] = useState(false);
   const [chosenStatus, setChosenStatus] = useState(
@@ -39,8 +40,8 @@ function AddNewTask() {
       description,
       status: chosenStatus,
       subtasks: subtasks,
+      id: crypto.randomUUID(),
     };
-
     const whereToAddTask = boards
       .filter((board) => board.name === selectedBoard)
       .at(0)
@@ -97,9 +98,9 @@ function AddNewTask() {
   // }, [setAddingNewTask]);
   return (
     <Overlay onClick={handleClick}>
-      <StyledAddNewTask ref={divRef}>
+      <StyledAddNewTask ref={divRef} isDarkMode={isDarkMode}>
         <h1>Add New Task</h1>
-        <Title>
+        <Title isDarkMode={isDarkMode}>
           <p>Title</p>
           <input
             type="text"
@@ -108,7 +109,7 @@ function AddNewTask() {
             onChange={(e) => setTitle(e.target.value)}
           />
         </Title>
-        <Description>
+        <Description isDarkMode={isDarkMode}>
           <p>Description</p>
           <textarea
             type="text"
@@ -176,7 +177,8 @@ export default AddNewTask;
 const StyledAddNewTask = styled.div`
   padding: 2.4rem;
   border-radius: 10px;
-  background-color: white;
+  background-color: ${(props) => (props.isDarkMode ? "#2B2C37" : "white")};
+  color: ${(props) => props.isDarkMode && "white"};
   display: flex;
   flex-direction: column;
 `;
@@ -207,6 +209,8 @@ const Title = styled.div`
   & > input {
     padding: 0.9rem 1.5rem 0.9rem 1.6rem;
     width: 26.4rem;
+    background-color: ${(props) => (props.isDarkMode ? "#20212C" : "white")};
+    color: ${(props) => props.isDarkMode && "white"};
   }
 `;
 
@@ -222,6 +226,8 @@ const Description = styled.div`
   & > textarea {
     padding: 0.9rem 1.5rem 3.3rem 1.6rem;
     width: 26.4rem;
+    background-color: ${(props) => (props.isDarkMode ? "#20212C" : "white")};
+    color: ${(props) => props.isDarkMode && "white"};
   }
 `;
 

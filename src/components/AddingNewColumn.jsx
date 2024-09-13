@@ -4,7 +4,8 @@ import { useBoards } from "../contexts/BoardsContext";
 import ReusableButton from "../UI/ReusableButton";
 
 function AddingNewColumn() {
-  const { setAddingNewColumn, boards, setBoards, selectedBoard } = useBoards();
+  const { setAddingNewColumn, boards, setBoards, selectedBoard, isDarkMode } =
+    useBoards();
   const [columnName, setColumnName] = useState("");
   const divRef = useRef(null);
 
@@ -39,8 +40,8 @@ function AddingNewColumn() {
     }
   };
   return (
-    <Overlay onSubmit={handleClick}>
-      <StyledAddingNewColumn ref={divRef}>
+    <Overlay onClick={handleClick}>
+      <StyledAddingNewColumn ref={divRef} isDarkMode={isDarkMode}>
         <Input>
           <p>Enter column name : </p>
           <input
@@ -79,7 +80,8 @@ const Overlay = styled.form`
 `;
 const StyledAddingNewColumn = styled.div`
   border-radius: 1rem;
-  background-color: white;
+  background-color: ${(props) => (props.isDarkMode ? "#2B2C37" : "white")};
+  color: ${(props) => props.isDarkMode && "white"};
   padding: 3rem;
   display: flex;
   align-items: center;

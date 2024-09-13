@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import cross from "../../public/assets/icon-cross.svg";
 import { useState } from "react";
+import { useBoards } from "../contexts/BoardsContext";
 function SubtaskToAdd({
   // placeholder,
   // setNumberOfSubtasks,
@@ -12,6 +13,8 @@ function SubtaskToAdd({
   setRender,
   item,
 }) {
+  const { isDarkMode } = useBoards();
+
   function handleChange(e) {
     const newSubtasks = subtasks.map((subtask, i) =>
       i === index ? { ...subtask, title: e.target.value } : subtask
@@ -35,7 +38,7 @@ function SubtaskToAdd({
 
   // const [subtask, setSubtask] = useState({ isCompleted: false, title: "" });
   return (
-    <StyledSubtaskToAdd index={index}>
+    <StyledSubtaskToAdd index={index} isDarkMode={isDarkMode}>
       <input
         type="text"
         value={subtasks[index].title}
@@ -54,9 +57,12 @@ const StyledSubtaskToAdd = styled.div`
   display: flex;
   align-items: center;
   gap: 1.6rem;
+
   & > input {
     padding: 0.9rem 0rem 0.9rem 1.6rem;
     width: 26.4rem;
+    background-color: ${(props) => (props.isDarkMode ? "#20212C" : "white")};
+    color: ${(props) => props.isDarkMode && "white"};
   }
   & > p {
     font-size: 1.3rem;

@@ -26,9 +26,10 @@ function ColumnTaskItem({ task, columnName }) {
         return;
       }
       // console.log(activeBoard);
-      const activeColumn = activeBoard.columns
-        .filter((column) => column.name === columnName)
-        .at(0);
+      const activeColumn = activeBoard.columns.find(
+        (column) => column.name === columnName
+      );
+
       // console.log(activeColumn);
       if (completedSubtasks === 0 && task.status !== "Todo") {
         activeColumn.tasks = activeColumn.tasks.filter(

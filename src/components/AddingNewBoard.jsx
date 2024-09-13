@@ -5,8 +5,14 @@ import { useBoards } from "../contexts/BoardsContext";
 
 function AddingNewBoard() {
   const [boardName, setBoardName] = useState("");
-  const { boards, setBoards, setAddingNewBoard, setSelectedBoard } =
-    useBoards();
+  const {
+    boards,
+    setBoards,
+    setAddingNewBoard,
+    setSelectedBoard,
+    isDarkMode,
+    setIsOpenSidebar,
+  } = useBoards();
 
   const divRef = useRef(null);
 
@@ -37,11 +43,12 @@ function AddingNewBoard() {
     });
     setAddingNewBoard(false);
     setSelectedBoard(boardName);
+    setIsOpenSidebar(false);
   }
 
   return (
-    <Overlay onSubmit={handleClick}>
-      <StyledAddingNewBoard ref={divRef}>
+    <Overlay onClick={handleClick}>
+      <StyledAddingNewBoard ref={divRef} isDarkMode={isDarkMode}>
         <Input>
           <p>Enter board name : </p>
           <input
@@ -81,7 +88,8 @@ const Overlay = styled.form`
 
 const StyledAddingNewBoard = styled.div`
   border-radius: 1rem;
-  background-color: white;
+  background-color: ${(props) => (props.isDarkMode ? "#2B2C37" : "white")};
+  color: ${(props) => props.isDarkMode && "white"};
   padding: 3rem;
   display: flex;
   align-items: center;
@@ -93,11 +101,13 @@ const Input = styled.div`
   display: flex;
   align-items: center;
   gap: 2rem;
+
   & > p {
     font-size: 2rem;
   }
   & > input {
     font-size: 2rem;
     border: none;
+    background-color: ${(props) => (props.isDarkMode ? "#2B2C37" : "white")};
   }
 `;
